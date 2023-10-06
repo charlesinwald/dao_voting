@@ -3,7 +3,7 @@ pragma solidity ^0.8.21;
 
 contract VotingDAO {
     struct Proposal {
-        string svg;
+        string svg; // the logo content
         uint256 yesVotes;
         uint256 noVotes;
         bool isExecuted;
@@ -62,4 +62,10 @@ contract VotingDAO {
 
         proposal.isExecuted = true;
     }
+
+    function viewVotes(uint256 _proposalId) public view returns (uint256 yesVotes, uint256 noVotes) {
+        Proposal storage proposal = proposals[_proposalId];
+        return (proposal.yesVotes, proposal.noVotes);
+    }
+
 }

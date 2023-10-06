@@ -43,4 +43,16 @@ contract('VotingDAO', ([owner, voter1, voter2]) => {
     const proposal = await contract.proposals(0);
     expect(proposal.isExecuted).to.be.true;
   });
+
+  it("should allow viewing votes on a proposal", async function() {
+    await contract.createProposal("SVG1", { from: owner });
+    await contract.addVoter(voter1, { from: owner });
+    await contract.addVoter(voter2, { from: owner });
+    await contract.vote(0, true, { from: voter1 });
+    await contract.vote(0, false, { from: voter2 });
+    const proposal = await contract.proposals(0);
+    console.log(proposal);
+    expect(proposal.yesVotes.toNumber()).to.equal(1);
+    expect(proposal.noVotes.toNumber()).to.equal(1);
+  });
 });
