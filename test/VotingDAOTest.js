@@ -10,6 +10,7 @@ contract('VotingDAO', ([owner, voter1, voter2]) => {
 
   it('should deploy the contract', async () => {
     expect(contract.address).to.exist;
+    console.log(owner, voter1, voter2);
   });
 
   it('should allow the owner to add a voter', async () => {
@@ -51,7 +52,6 @@ contract('VotingDAO', ([owner, voter1, voter2]) => {
     await contract.vote(0, true, { from: voter1 });
     await contract.vote(0, false, { from: voter2 });
     const proposal = await contract.proposals(0);
-    console.log(proposal);
     expect(proposal.yesVotes.toNumber()).to.equal(1);
     expect(proposal.noVotes.toNumber()).to.equal(1);
   });
