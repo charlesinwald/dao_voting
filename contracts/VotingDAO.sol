@@ -7,6 +7,7 @@ contract VotingDAO {
         uint256 yesVotes;
         uint256 noVotes;
         bool isExecuted;
+        mapping(address => bool) hasVoted;
     }
 
     address public owner;
@@ -35,13 +36,23 @@ contract VotingDAO {
     }
 
     function createProposal(string memory _svg) public onlyOwner {
-        proposals.push(Proposal(_svg, 0, 0, false));
+        proposals.push();
+        Proposal storage newProposal = proposals[proposals.length - 1];
+        newProposal.svg = _svg;
+        newProposal.yesVotes = 0;
+        newProposal.noVotes = 0;
+        newProposal.isExecuted = false;
+
         emit NewProposal(proposals.length - 1, _svg);
     }
 
     function vote(uint256 _proposalId, bool _vote) public onlyVoters {
         require(_proposalId < proposals.length, "Invalid proposal ID");
         require(!proposals[_proposalId].isExecuted, "Proposal already executed");
+        require(!proposals[_proposalId].hasVoted[msg.sender], "Already voted");
+
+        // Mark that this voter has voted on this proposal
+        proposals[_proposalId].hasVoted[msg.sender] = true;
 
         if (_vote) {
             proposals[_proposalId].yesVotes++;
@@ -57,7 +68,7 @@ contract VotingDAO {
         require(!proposals[_proposalId].isExecuted, "Proposal already executed");
 
         Proposal storage proposal = proposals[_proposalId];
-        
+
         require(proposal.yesVotes > proposal.noVotes, "Not enough yes votes");
 
         proposal.isExecuted = true;
@@ -67,5 +78,4 @@ contract VotingDAO {
         Proposal storage proposal = proposals[_proposalId];
         return (proposal.yesVotes, proposal.noVotes);
     }
-
 }

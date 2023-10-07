@@ -13,7 +13,6 @@ describe('Smart Contract API Tests', () => {
     const res = await request(app)
       .post('/addVoter')
       .send({ owner: testOwner, voterAddress: testVoter });
-    // console.log(res);
     expect(res.status).to.equal(200);
     expect(res.body).to.have.property('transactionHash');
   });
@@ -22,7 +21,7 @@ describe('Smart Contract API Tests', () => {
     const res = await request(app)
       .post('/createProposal')
       .send({ owner: testOwner, svg: '<svg>Test SVG</svg>' });
-    
+
     expect(res.status).to.equal(200);
     expect(res.body).to.have.property('transactionHash');
   });
@@ -32,8 +31,6 @@ describe('Smart Contract API Tests', () => {
     const res = await request(app)
       .post('/vote')
       .send(reqBody);
-    console.log(reqBody);
-    console.log(res);
     expect(res.status).to.equal(200);
     expect(res.body).to.have.property('transactionHash');
   });
@@ -50,7 +47,7 @@ describe('Smart Contract API Tests', () => {
   it('should view votes on a proposal', async () => {
     const res = await request(app)
       .get(`/viewVotes/${testProposalId}`);
-
+    console.log('res.body', res.body);
     expect(res.status).to.equal(200);
     expect(res.body).to.have.property('yesVotes');
     expect(res.body).to.have.property('noVotes');

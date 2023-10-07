@@ -45,14 +45,22 @@ contract('VotingDAO', ([owner, voter1, voter2]) => {
     expect(proposal.isExecuted).to.be.true;
   });
 
-  it("should allow viewing votes on a proposal", async function() {
-    await contract.createProposal("SVG1", { from: owner });
+  it("should return correct vote counts for a proposal", async () => {
+    // Create a new proposal (assuming createProposal is a function in your contract)
+    await contract.createProposal("Proposal 1");
     await contract.addVoter(voter1, { from: owner });
     await contract.addVoter(voter2, { from: owner });
-    await contract.vote(0, true, { from: voter1 });
-    await contract.vote(0, false, { from: voter2 });
-    const proposal = await contract.proposals(0);
-    expect(proposal.yesVotes.toNumber()).to.equal(1);
-    expect(proposal.noVotes.toNumber()).to.equal(1);
+    // Cast some votes (assuming vote is a function in your contract)
+    await contract.vote(0, true, { from: voter1 }); // yes vote
+    await contract.vote(0, false, { from: voter2 }); // no vote
+
+    // Retrieve the vote counts
+    const result = await contract.viewVotes(0);
+    const yesVotes = result[0].toNumber(); // Convert BigNumber to a regular number
+    const noVotes = result[1].toNumber(); // Convert BigNumber to a regular number
+
+    // Verify the vote counts
+    assert.equal(yesVotes, 1, "Yes votes count should be 2");
+    assert.equal(noVotes, 1, "No votes count should be 1");
   });
 });
