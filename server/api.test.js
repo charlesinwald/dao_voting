@@ -4,7 +4,6 @@ const app = require('./app');
 
 describe('Smart Contract API Tests', () => {
   
-  const testOwner = "0xa1C26a8Da9758F7f6F1F57e117a88D2eaB3e682c";
   const testVoter = "0xC6B5082Fd37936A9365a9e1566d4272A0ad48073";
   const testProposalId = 1;
 
@@ -12,7 +11,7 @@ describe('Smart Contract API Tests', () => {
     this.timeout(4000);
     const res = await request(app)
       .post('/addVoter')
-      .send({ owner: testOwner, voterAddress: testVoter });
+      .send({ voterAddress: testVoter });
     expect(res.status).to.equal(200);
     expect(res.body).to.have.property('transactionHash');
   });
@@ -20,8 +19,7 @@ describe('Smart Contract API Tests', () => {
   it('should create a proposal', async () => {
     const res = await request(app)
       .post('/createProposal')
-      .send({ owner: testOwner, svg: '<svg>Test SVG</svg>' });
-
+      .send({ svg: '<svg>Test SVG</svg>' });
     expect(res.status).to.equal(200);
     expect(res.body).to.have.property('transactionHash');
   });
@@ -38,7 +36,7 @@ describe('Smart Contract API Tests', () => {
   it('should execute a proposal', async () => {
     const res = await request(app)
       .post('/executeProposal')
-      .send({ proposalId: testProposalId, owner: testOwner });
+      .send({ proposalId: testProposalId });
 
     expect(res.status).to.equal(200);
     expect(res.body).to.have.property('transactionHash');

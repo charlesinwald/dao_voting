@@ -2,9 +2,12 @@ var express = require('express');
 var router = express.Router();
 const { Web3 } = require('web3');
 var bodyParser = require('body-parser');
+const cors = require('cors');
 
 // Setup web3 and the contract ABI & Address
 const web3 = new Web3('http://localhost:9545');
+
+const fixedOwner = "0xa1C26a8Da9758F7f6F1F57e117a88D2eaB3e682c";
 
 const contractABI = require('../../build/contracts/VotingDAO.json').abi;
 
@@ -18,20 +21,25 @@ async function initializeContract(req, res, next) {
 router.use(initializeContract);
 router.use(bodyParser.json());
 
+// CORS
+router.use(cors({
+  origin: 'http://localhost:3001'
+}));
+
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
 
 
 router.post('/addVoter', async (req, res) => {
-  const { owner, voterAddress } = req.body;
-  const addVoter = await req.contract.methods.addVoter(voterAddress).send({ from: owner });
+  const { voterAddress } = req.body;
+  const addVoter = await req.contract.methods.addVoter(voterAddress).send({ from: fixedOwner });
   res.send({'transactionHash': addVoter.transactionHash});
 });
 
 router.post('/createProposal', async (req, res) => {
-  const { owner, svg } = req.body;
-  const createProposal = await req.contract.methods.createProposal(svg).send({ from: owner });
+  const { svg } = req.body;
+  const createProposal = await req.contract.methods.createProposal(svg).send({ from: fixedOwner });
   res.send({'transactionHash': createProposal.transactionHash});
 });
 
@@ -42,8 +50,8 @@ router.post('/vote', async (req, res) => {
 });
 
 router.post('/executeProposal', async (req, res) => {
-  const { proposalId, owner } = req.body;
-  const executeProposal = await req.contract.methods.executeProposal(proposalId).send({ from: owner });
+  const { proposalId } = req.body;
+  const executeProposal = await req.contract.methods.executeProposal(proposalId).send({ from: fixedOwner });
   res.send({'transactionHash': executeProposal.transactionHash});
 });
 
