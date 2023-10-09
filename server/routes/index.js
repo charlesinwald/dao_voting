@@ -48,7 +48,7 @@ router.post('/addVoter', async (req, res) => {
 
 router.post('/createProposal', async (req, res) => {
   const { svg } = req.body;
-  const createProposal = await req.contract.methods.createProposal(svg).send({ from: fixedOwner });
+  const createProposal = await req.contract.methods.createProposal(svg).send({ from: fixedOwner, gas: 2000000  });
   console.log('createProposal', createProposal);
   res.send({'transactionHash': createProposal.transactionHash, 'proposalId': createProposal.proposalId});
 });
