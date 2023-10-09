@@ -10,7 +10,7 @@ const web3 = new Web3("http://localhost:9545");
 
 const fixedOwner = "0xa1C26a8Da9758F7f6F1F57e117a88D2eaB3e682c";
 
-const contractABI = require("../../build/contracts/VotingDAO.json").abi;
+const contractABI = require("../VotingDAO.json").abi;
 
 // Setup SQLite
 const sqlite3 = require("sqlite3").verbose();
@@ -38,7 +38,7 @@ async function initializeContract(req, res, next) {
   try {
     const networkId = await web3.eth.net.getId();
     // console.log('Network ID:', networkId);
-    const deployedAddress = require("../../build/contracts/VotingDAO.json")
+    const deployedAddress = require("../VotingDAO.json")
       .networks[networkId].address;
     // console.log('Deployed Address:', deployedAddress);
     req.contract = new web3.eth.Contract(contractABI, deployedAddress);
