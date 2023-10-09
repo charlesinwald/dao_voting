@@ -53,6 +53,24 @@ function App() {
     }
   };
 
+  const castVote = async (proposalIndex: number, vote: boolean) => {
+    try {
+      const res = await fetch(`${BACKEND_URL}/vote`, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ proposalId: proposalIndex, vote, voterAddress: account })
+      });
+      const data = await res.json();
+      console.log("Transaction Hash:", data.transactionHash);
+      if (data.transactionHash) {
+        getAllProposals();
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+  
+
   const joinDAO = async () => {
     try {
       const res = await fetch(`${BACKEND_URL}/addVoter`, {
@@ -81,6 +99,7 @@ function App() {
       console.log("Transaction Hash:", data.transactionHash);
       if (data.transactionHash) {
         setSvgData("");
+        getAllProposals();
       }
     } catch (error) {
       console.error("Error:", error);
@@ -149,16 +168,23 @@ function App() {
           {proposals && <div className="proposal-gallery">
         <h3>Proposal Gallery</h3>
         <div className="gallery-grid">
+        {proposals && <div className="proposal-gallery">
+        <h3>Proposal Gallery</h3>
+        <div className="gallery-grid">
           {proposals?.map((proposal, index) => (
             <div key={index} className="proposal-card">
-              <div dangerouslySetInnerHTML={{ __html: proposal.svg }} />
+              <div className="scalable-svg" dangerouslySetInnerHTML={{ __html: proposal.svg }} />
               <div className="proposal-meta">
                 <p>Yes Votes: {proposal.yesVotes}</p>
                 <p>No Votes: {proposal.noVotes}</p>
                 <p>Is Executed: {proposal.isExecuted ? 'Yes' : 'No'}</p>
               </div>
+              <button onClick={() => castVote(index, true)}>Yes</button>
+              <button onClick={() => castVote(index, false)}>No</button>
             </div>
           ))}
+        </div>
+      </div>}
         </div>
       </div>}
         </div>}

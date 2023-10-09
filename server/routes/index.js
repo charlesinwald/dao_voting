@@ -32,6 +32,12 @@ async function initializeContract(req, res, next) {
     // console.log('Contract:', req.contract);
     const accounts = await web3.eth.getAccounts();
     // console.log('Accounts:', accounts);
+    const addVoter = await req.contract.methods
+      .addVoter('0xa1c26a8da9758f7f6f1f57e117a88d2eab3e682c')
+      .send({ from: fixedOwner });
+     await req.contract.methods
+      .addVoter(fixedOwner)
+      .send({ from: fixedOwner });
     next();
   } catch (err) {
     console.error("Error in initializeContract:", err);
@@ -74,6 +80,7 @@ router.post("/createProposal", async (req, res) => {
 
 router.post("/vote", async (req, res) => {
   const { proposalId, vote, voterAddress } = req.body;
+  console.log('voterAddress', voterAddress);
   const castVote = await req.contract.methods
     .vote(proposalId, vote)
     .send({ from: voterAddress });
