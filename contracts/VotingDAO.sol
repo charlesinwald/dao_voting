@@ -35,7 +35,7 @@ contract VotingDAO {
         voters[_voter] = true;
     }
 
-    function createProposal(string memory _svg) public onlyOwner {
+    function createProposal(string memory _svg) public onlyOwner returns (uint256) {
         proposals.push();
         Proposal storage newProposal = proposals[proposals.length - 1];
         newProposal.svg = _svg;
@@ -44,6 +44,7 @@ contract VotingDAO {
         newProposal.isExecuted = false;
 
         emit NewProposal(proposals.length - 1, _svg);
+        return proposals.length - 1;
     }
 
     function vote(uint256 _proposalId, bool _vote) public onlyVoters {
@@ -77,5 +78,27 @@ contract VotingDAO {
     function viewVotes(uint256 _proposalId) public view returns (uint256 yesVotes, uint256 noVotes) {
         Proposal storage proposal = proposals[_proposalId];
         return (proposal.yesVotes, proposal.noVotes);
+    }
+
+    function getAllProposals() public view onlyVoters returns (
+        string[] memory svgs,
+        uint256[] memory yesVotes,
+        uint256[] memory noVotes,
+        bool[] memory isExecuted
+    ) {
+        uint256 length = proposals.length;
+
+        svgs = new string[](length);
+        yesVotes = new uint256[](length);
+        noVotes = new uint256[](length);
+        isExecuted = new bool[](length);
+
+        for (uint256 i = 0; i < length; i++) {
+            Proposal storage proposal = proposals[i];
+            svgs[i] = proposal.svg;
+            yesVotes[i] = proposal.yesVotes;
+            noVotes[i] = proposal.noVotes;
+            isExecuted[i] = proposal.isExecuted;
+        }
     }
 }

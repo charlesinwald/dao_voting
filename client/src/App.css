@@ -76,3 +76,25 @@
   padding: 20px;
   border-radius: 5px;
 }
+
+.proposal-gallery {
+  padding: 1rem;
+}
+
+.gallery-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.proposal-card {
+  width: 200px;
+  border: 1px solid #ccc;
+  padding: 1rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.proposal-meta {
+  margin-top: 0.5rem;
+  font-size: 0.8rem;
+}
