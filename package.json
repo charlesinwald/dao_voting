@@ -1,0 +1,12 @@
+{
+  "name": "dao_voting",
+  "version": "1.0.0",
+  "description": "Vote on SVG Logos",
+  "main": "truffle-config.js",
+  "author": "Charles Inwald",
+  "license": "ISC",
+  "dependencies": {
+    "@truffle/hdwallet-provider": "^2.1.15",
+    "dotenv": "^16.3.1"
+  }
+}

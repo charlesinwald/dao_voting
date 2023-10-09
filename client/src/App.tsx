@@ -142,6 +142,7 @@ function App() {
     <div className="App">
       <header className="App-header">
         <div className="App-link">
+          <h3>LogoDAO</h3>
           {!account ?
             <button className="connect-button" onClick={connect} disabled={connecting}>Connect with MetaMask</button> :
             <p className="connected-account">{`Connected Account: ${account}`}</p>
