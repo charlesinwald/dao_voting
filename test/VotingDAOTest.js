@@ -66,8 +66,8 @@ contract('VotingDAO', ([owner, voter1, voter2]) => {
 
   it('should return all proposals', async () => {
     await contract.addVoter(owner, { from: owner });
-    await contract.createProposal("Sample SVG 1", { from: owner });
-    await contract.createProposal("Sample SVG 2", { from: owner });
+    await contract.createProposal("<svg><svg>", { from: owner });
+    await contract.createProposal("<svg><rect></rect></svg>", { from: owner });
     
     const proposals = await contract.getAllProposals();
     assert.equal(proposals.svgs[0], "Sample SVG 1", "Proposal 1 SVG should be Sample SVG 1");

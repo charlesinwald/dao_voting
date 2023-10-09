@@ -29,7 +29,7 @@ describe('Smart Contract API Tests', () => {
     const  output = (await request(app)
       .post('/createProposal')
       .send({ svg: '<svg>Test SVG</svg>' }));
-      console.log('output', output);
+      // console.log('output', output);
     const proposalId = output.body.proposalId;
       console.log('proposalId', proposalId);
     await request(app)
