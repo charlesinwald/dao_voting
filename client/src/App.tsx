@@ -165,9 +165,6 @@ function App() {
             {!invalidSvg && <p>SVG Preview</p>}
             {!invalidSvg && <div dangerouslySetInnerHTML={{ __html: svgData }} />}
           </div>}
-          {proposals && <div className="proposal-gallery">
-        <h3>Proposal Gallery</h3>
-        <div className="gallery-grid">
         {proposals && <div className="proposal-gallery">
         <h3>Proposal Gallery</h3>
         <div className="gallery-grid">
@@ -183,8 +180,6 @@ function App() {
               <button onClick={() => castVote(index, false)}>No</button>
             </div>
           ))}
-        </div>
-      </div>}
         </div>
       </div>}
         </div>}
