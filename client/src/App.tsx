@@ -172,12 +172,16 @@ function App() {
             <div key={index} className="proposal-card">
               <div className="scalable-svg" dangerouslySetInnerHTML={{ __html: proposal.svg }} />
               <div className="proposal-meta">
+              <button onClick={() => castVote(index, false)}>No</button>
+              <div className="vote-count">
                 <p>Yes Votes: {proposal.yesVotes}</p>
                 <p>No Votes: {proposal.noVotes}</p>
                 <p>Is Executed: {proposal.isExecuted ? 'Yes' : 'No'}</p>
               </div>
-              <button onClick={() => castVote(index, true)}>Yes</button>
-              <button onClick={() => castVote(index, false)}>No</button>
+              <div className="vote-buttons">
+                <button onClick={() => castVote(index, true)}>Yes</button>
+              </div>
+            </div>
             </div>
           ))}
         </div>

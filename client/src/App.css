@@ -97,12 +97,19 @@
 }
 
 .proposal-meta {
-  margin-top: 0.5rem;
+  margin-top: 0.25rem;
   font-size: 0.8rem;
+  background-color: #282c34a4;
+  position: relative;
+  z-index: 10;
+  display: flex;  
+  justify-content: space-between;  
+  align-items: center;
+  border-radius: 5px;
 }
 
 .scalable-svg {
   max-width: 100%;
-  max-height: 100%;
+  max-height: 65%;
   object-fit: contain;
 }
