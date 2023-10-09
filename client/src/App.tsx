@@ -17,6 +17,8 @@ function App() {
   const [svgData, setSvgData] = useState<string>("");
   const [invalidSvg, setInvalidSvg] = useState<boolean>(false);
   const [proposals, setProposals] = useState<Proposal[]>([]);
+  const [fileName, setFileName] = useState("");
+
 
   const { sdk, connected, connecting, provider, chainId } = useSDK();
 
@@ -28,12 +30,11 @@ function App() {
         setSvgData(event.target?.result as string);
       };
       reader.readAsText(file);
+      setFileName(file.name);
     }
   };
 
   const validateAndSetSvg = (data: string) => {
-    // Here you can put logic to validate the SVG data
-    // For now, let's just check if it starts with '<svg'
     if (data.trim().startsWith('<svg')) {
       setInvalidSvg(false);
       setSvgData(data);
@@ -158,29 +159,51 @@ function App() {
             onChange={(e) => validateAndSetSvg(e.target.value)}
           />
           {svgData && <button className="clear-button" onClick={() => setSvgData("")}>Clear</button>}
-          <button className="submit-button" onClick={createProposal}>Submit Proposal</button>
           {invalidSvg && <p className="invalid-svg">Invalid SVG!</p>}
-          <input type="file" className="file-input" accept="image/svg+xml" onChange={handleFileUpload} />
+          <p>OR</p>
+          <div className="file-upload">
+          <label htmlFor="file-upload" className="file-upload-label upload-button">
+            <i className="upload-icon">📤</i> Upload SVG
+          </label>
+          <input
+            id="file-upload"
+            type="file"
+            className="file-input-hidden"
+            accept="image/svg+xml"
+            onChange={handleFileUpload}
+          />
+          <span className="file-name">
+            {fileName ? fileName : "No file chosen"}
+          </span>
+        </div>
           {svgData && <div className="preview-section">
             {!invalidSvg && <p>SVG Preview</p>}
             {!invalidSvg && <div dangerouslySetInnerHTML={{ __html: svgData }} />}
           </div>}
+          <button className="submit-button proposal-button" onClick={createProposal} disabled={!svgData || invalidSvg}>
+            {svgData && invalidSvg && <i className="proposal-icon">✅</i>} Submit Proposal
+          </button>
         {proposals && <div className="proposal-gallery">
         <h3>Proposal Gallery</h3>
         <div className="gallery-grid">
-          {proposals?.map((proposal, index) => (
+          {proposals?.sort((a, b) => {
+            const aRatio = a.yesVotes - a.noVotes;
+            const bRatio = b.yesVotes - b.noVotes;
+            return bRatio - aRatio;
+          }).map((proposal, index) => (
             <div key={index} className="proposal-card">
+
               <div className="scalable-svg" dangerouslySetInnerHTML={{ __html: proposal.svg }} />
               <div className="proposal-meta">
-              <button onClick={() => castVote(index, false)}>No</button>
+              <button className="vote-button" onClick={() => castVote(index, false)}>👎</button>
               <div className="vote-count">
                 <p>Yes Votes: {proposal.yesVotes}</p>
                 <p>No Votes: {proposal.noVotes}</p>
                 <p>Is Executed: {proposal.isExecuted ? 'Yes' : 'No'}</p>
               </div>
-              <div className="vote-buttons">
-                <button onClick={() => castVote(index, true)}>Yes</button>
-              </div>
+              {/* <div className="vote-buttons"> */}
+                <button className="vote-button" onClick={() => castVote(index, true)}>👍</button>
+              {/* </div> */}
             </div>
             </div>
           ))}
