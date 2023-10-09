@@ -35,7 +35,7 @@ describe('Smart Contract API Tests', () => {
     await request(app)
       .post('/addVoter')
       .send({ voterAddress: testVoter2 });
-      const reqBody = { proposalId: proposalId, vote: true, voterAddress: testVoter };
+      const reqBody = { proposalId: proposalId, vote: true, voterAddress: testVoter2 };
     const res = await request(app)
       .post('/vote')
       .send(reqBody);
