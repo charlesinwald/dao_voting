@@ -1,7 +1,7 @@
-LogoDAO
+# LogoDAO
 Vote on your favorite logo
 
-Requirements
+## Requirements
 Node.js and npm: [Download and Install](https://nodejs.org/en/download/)
 
 Git: [Download and Install](https://git-scm.com/downloads)
@@ -12,7 +12,7 @@ Truffle: Install via npm by running
 
 Ganache: [Download and Install](https://www.trufflesuite.com/ganache)
 
-Installation Steps
+## Installation Steps
 
 First, clone the repository to your local machine. Open your terminal and run:
 
@@ -64,4 +64,12 @@ If you encounter issues with contract migration, try resetting your local blockc
 Make sure Ganache is running and set to the correct port (default is 8545).
 
 If you've changed the smart contracts, remember to compile and migrate again.
+
+# Further Work
+
+If it weren't for time constraints:
+-  The svgs would be stored using IPFS, to increase resililency and decentralization.
+-  More nuanced access control beyond owner and voter
+-  Pagination of proposals 
+-  Dockerization
 
