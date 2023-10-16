@@ -12,6 +12,8 @@ Truffle: Install via npm by running
 
 Ganache: [Download and Install](https://www.trufflesuite.com/ganache)
 
+Replace credentials in .env with your own from [Infura](https://infura.io)
+
 ## Installation Steps
 
 First, clone the repository to your local machine. Open your terminal and run:
